@@ -12,6 +12,7 @@ import com.example.google_notes.model.GoogleNotes;
 import com.example.google_notes.service.GoogleNotesService;
 
 @CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping("/api/v1/")
 public class GoogleNotesController {

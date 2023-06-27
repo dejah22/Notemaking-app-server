@@ -1,6 +1,5 @@
 package com.example.google_notes.model;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
