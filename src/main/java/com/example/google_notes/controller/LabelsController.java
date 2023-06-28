@@ -1,10 +1,12 @@
 package com.example.google_notes.controller;
 
+import com.example.google_notes.dto.LabelsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +24,20 @@ public class LabelsController {
 
     // get all google notes
     @GetMapping("/Labels")
-    public List<Labels> getAllLabels() {
-        return LabelsService.getAllLabels();
+    public List<LabelsDTO> getAllLabels() {
+        List<Labels> labels = LabelsService.getAllLabels();
+        List<LabelsDTO> labelDTOs = new ArrayList<LabelsDTO>();
+
+        for (Labels label : labels) {
+            LabelsDTO labelDTO = new LabelsDTO();
+            labelDTO.setId(label.getId());
+            labelDTO.setTimeCreated(label.getTimeCreated());
+            labelDTO.setName(label.getName());
+
+            labelDTOs.add(labelDTO);
+        }
+
+        return labelDTOs;
     }
 
     // create google notes rest api
@@ -34,17 +48,25 @@ public class LabelsController {
 
     // get Labels by id rest api
     @GetMapping("/Labels/{id}")
-    public ResponseEntity<Labels> getLabelById(@PathVariable Long id) {
-        Labels Labels = LabelsService.getlabelById(id);
-        return ResponseEntity.ok(Labels);
+    public ResponseEntity<LabelsDTO> getLabelById(@PathVariable Long id) {
+        Labels label = LabelsService.getlabelById(id);
+        LabelsDTO labelDTO = new LabelsDTO();
+        labelDTO.setId(label.getId());
+        labelDTO.setTimeCreated(label.getTimeCreated());
+        labelDTO.setName(label.getName());
+        return ResponseEntity.ok(labelDTO);
     }
 
     // update Labels rest api
     @PutMapping("/Labels/{id}")
-    public ResponseEntity<Labels> updateLabel(
+    public ResponseEntity<LabelsDTO> updateLabel(
             @PathVariable Long id, @RequestBody Labels LabelsDetails) {
         Labels updatedLabels = LabelsService.updatelabel(id, LabelsDetails);
-        return ResponseEntity.ok(updatedLabels);
+        LabelsDTO updatedLabelDTO = new LabelsDTO();
+        updatedLabelDTO.setId(updatedLabels.getId());
+        updatedLabelDTO.setTimeCreated(updatedLabels.getTimeCreated());
+        updatedLabelDTO.setName(updatedLabels.getName());
+        return ResponseEntity.ok(updatedLabelDTO);
     }
 
     // delete google notes rest api

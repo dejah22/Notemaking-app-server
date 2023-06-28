@@ -1,5 +1,3 @@
-
-
 package com.example.google_notes.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -59,6 +57,14 @@ public class Labels {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<GoogleNotes> getGoogleNotes() {
+        return googleNotes;
+    }
+
+    public void setGoogleNotes(Set<GoogleNotes> googleNotes) {
+        this.googleNotes = googleNotes;
     }
 }
 

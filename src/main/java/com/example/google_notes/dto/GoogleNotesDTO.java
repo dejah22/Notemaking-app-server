@@ -1,55 +1,29 @@
-package com.example.google_notes.model;
+package com.example.google_notes.dto;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-@Entity
-@Table(name = "googlenotes")
-public class GoogleNotes {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class GoogleNotesDTO {
     private long id;
+    private Set<LabelsDTO> labelsDTO = new HashSet<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "googlenotes_labels",
-            joinColumns = @JoinColumn(name = "googlenotes_id"),
-            inverseJoinColumns = @JoinColumn(name = "labels_id")
-    )
-    private Set<Labels> labels = new HashSet<>();
-
-    @Column(name = "titleName")
     private String titleName;
 
-    @Column(name = "notecontent")
     private String notecontent;
 
-    @Column(name = "color")
     private String color;
 
-    @Column(name = "isPinned")
     private Boolean isPinned;
 
-    @CreationTimestamp
-    @Column(name = "time_created")
     private LocalDateTime timeCreated;
 
-    @UpdateTimestamp
-    @Column(name = "last_modified")
     private LocalDateTime lastModified;
 
 
-    public GoogleNotes() {
+    public GoogleNotesDTO() {
     }
 
-    public GoogleNotes(String title, String content) {
-        this.titleName = title;
-        this.notecontent = content;
-    }
 
     public long getId() {
         return id;
@@ -82,7 +56,7 @@ public class GoogleNotes {
     public void setTimeCreated(LocalDateTime timeCreated) {
         this.timeCreated = timeCreated;
     }
-// added a commment
+    // added a commment
     public LocalDateTime getLastModified() {
         return lastModified;
     }
@@ -107,21 +81,11 @@ public class GoogleNotes {
         this.color = color;
     }
 
-    public Set<Labels> getLabels() {
-        return labels;
+    public Set<LabelsDTO> getLabels() {
+        return labelsDTO;
     }
 
-    public void setLabels(Set<Labels> labels) {
-        this.labels = labels;
-    }
-
-    public void addLabel(Labels label) {
-        this.labels.add(label);
-        label.getGoogleNotes().add(this);
-    }
-
-    public void removeLabel(Labels label) {
-        this.labels.remove(label);
-        label.getGoogleNotes().remove(this);
+    public void setLabels(Set<LabelsDTO> labelsDTO) {
+        this.labelsDTO = labelsDTO;
     }
 }
