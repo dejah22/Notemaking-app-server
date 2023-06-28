@@ -1,5 +1,8 @@
 package com.example.google_notes.model;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,6 +14,14 @@ public class GoogleNotes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @ManyToMany
+    @JoinTable(
+            name = "googlenotes_labels",
+            joinColumns = @JoinColumn(name = "googlenotes_id"),
+            inverseJoinColumns = @JoinColumn(name = "labels_id")
+    )
+    private Set<Labels> labels = new HashSet<>();
+
     @Column(name = "titleName")
     private String titleName;
 
@@ -19,6 +30,9 @@ public class GoogleNotes {
 
     @Column(name = "color")
     private String color;
+
+    @Column(name = "isPinned")
+    private Boolean isPinned;
 
     @CreationTimestamp
     @Column(name = "time_created")
@@ -77,11 +91,35 @@ public class GoogleNotes {
         this.lastModified = lastModified;
     }
 
+    public Boolean getPinned() {
+        return isPinned;
+    }
+
+    public void setPinned(Boolean pinned) {
+        isPinned = pinned;
+    }
+
     public String getColor() {
         return color;
     }
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public Set<Labels> getLabels() {
+        return labels;
+    }
+
+    public void setLabels(Set<Labels> labels) {
+        this.labels = labels;
+    }
+
+    public void addLabel(Labels label) {
+        this.labels.add(label);
+    }
+
+    public void removeLabel(Labels label) {
+        this.labels.remove(label);
     }
 }
