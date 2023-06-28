@@ -1,6 +1,7 @@
 package com.example.google_notes.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +52,6 @@ public class LabelsController {
     public ResponseEntity<Map<String, Boolean>> deleteLabel(@PathVariable Long id) {
         LabelsService.deletelabelById(id);
         Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 }
