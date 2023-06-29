@@ -29,6 +29,7 @@ public class GoogleNotesService {
 
     public GoogleNotes createGoogleNote(GoogleNotes googleNotes) {
         googleNotes.setColor("#97BDDE");
+        googleNotes.setPinned(false);
         return googleNotesRepository.save(googleNotes);
     }
 
@@ -44,10 +45,20 @@ public class GoogleNotesService {
         googleNotes.setTitleName(googleNotesDetails.getTitleName() == null ? googleNotes.getTitleName() : googleNotesDetails.getTitleName());
         googleNotes.setNotecontent(googleNotesDetails.getNotecontent() == null ? googleNotes.getNotecontent() : googleNotesDetails.getNotecontent());
         googleNotes.setColor(googleNotesDetails.getColor() == null ? googleNotes.getColor() : googleNotesDetails.getColor());
+        googleNotes.setPinned(googleNotesDetails.getPinned() == null ? googleNotes.getPinned() : googleNotesDetails.getPinned());
 
         return googleNotesRepository.save(googleNotes);
     }
 
+
+    public GoogleNotes updateGoogleNoteLabels(Long id, GoogleNotes googleNotesDetails) {
+        GoogleNotes googleNotes = googleNotesRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Google Note does not exist with id: " + id));
+    
+        googleNotes.setLabels(googleNotesDetails.getLabels());
+
+        return googleNotesRepository.save(googleNotes);
+    }
     public void deleteGoogleNoteById(Long id) {
         GoogleNotes googleNotes = googleNotesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Google Note does not exist with id: " + id));
