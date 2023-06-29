@@ -37,8 +37,8 @@ public class LabelsController {
 
     // create google notes rest api
     @PostMapping("/labels")
-    public Labels createLabel(@RequestBody Labels Labels) {
-        return LabelsService.createlabel(Labels);
+    public LabelsDTO createLabel(@RequestBody Labels Labels) {
+        return new LabelsDTO(LabelsService.createlabel(Labels));
     }
 
     // get Labels by id rest api
