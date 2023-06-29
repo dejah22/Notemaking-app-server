@@ -1,5 +1,8 @@
 package com.example.google_notes.dto;
 
+import com.example.google_notes.model.GoogleNotes;
+import com.example.google_notes.model.Labels;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +27,18 @@ public class GoogleNotesDTO {
     public GoogleNotesDTO() {
     }
 
+    public GoogleNotesDTO(GoogleNotes googleNotes) {
+        this.id = googleNotes.getId();
+        this.titleName = googleNotes.getTitleName();
+        this.notecontent = googleNotes.getNotecontent();
+        this.color = googleNotes.getColor();
+        this.isPinned = googleNotes.getPinned();
+        this.lastModified = googleNotes.getLastModified();
+        this.timeCreated = googleNotes.getTimeCreated();
+        for (Labels label : googleNotes.getLabels()) {
+            this.labelsDTO.add(new LabelsDTO(label));
+        }
+    }
 
     public long getId() {
         return id;

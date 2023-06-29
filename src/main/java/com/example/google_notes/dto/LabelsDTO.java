@@ -1,5 +1,7 @@
 package com.example.google_notes.dto;
 
+import com.example.google_notes.model.Labels;
+
 import java.time.LocalDateTime;
 
 
@@ -16,6 +18,11 @@ public class LabelsDTO {
         this.name = name;
     }
 
+    public LabelsDTO(Labels label) {
+        this.id = label.getId();
+        this.timeCreated = label.getTimeCreated();
+        this.name = label.getName();
+    }
     public LabelsDTO() {
 
     }

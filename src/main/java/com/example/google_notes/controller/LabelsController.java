@@ -1,15 +1,14 @@
 package com.example.google_notes.controller;
 
+import com.example.google_notes.dto.GoogleNotesDTO;
 import com.example.google_notes.dto.LabelsDTO;
+import com.example.google_notes.model.GoogleNotes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.example.google_notes.model.Labels;
 import com.example.google_notes.service.LabelsService;
@@ -23,17 +22,13 @@ public class LabelsController {
     private LabelsService LabelsService;
 
     // get all google notes
-    @GetMapping("/Labels")
+    @GetMapping("/labels")
     public List<LabelsDTO> getAllLabels() {
         List<Labels> labels = LabelsService.getAllLabels();
         List<LabelsDTO> labelDTOs = new ArrayList<LabelsDTO>();
 
         for (Labels label : labels) {
-            LabelsDTO labelDTO = new LabelsDTO();
-            labelDTO.setId(label.getId());
-            labelDTO.setTimeCreated(label.getTimeCreated());
-            labelDTO.setName(label.getName());
-
+            LabelsDTO labelDTO = new LabelsDTO(label);
             labelDTOs.add(labelDTO);
         }
 
@@ -41,36 +36,42 @@ public class LabelsController {
     }
 
     // create google notes rest api
-    @PostMapping("/Labels")
+    @PostMapping("/labels")
     public Labels createLabel(@RequestBody Labels Labels) {
         return LabelsService.createlabel(Labels);
     }
 
     // get Labels by id rest api
-    @GetMapping("/Labels/{id}")
+    @GetMapping("/labels/{id}")
     public ResponseEntity<LabelsDTO> getLabelById(@PathVariable Long id) {
         Labels label = LabelsService.getlabelById(id);
-        LabelsDTO labelDTO = new LabelsDTO();
-        labelDTO.setId(label.getId());
-        labelDTO.setTimeCreated(label.getTimeCreated());
-        labelDTO.setName(label.getName());
+        LabelsDTO labelDTO = new LabelsDTO(label);
         return ResponseEntity.ok(labelDTO);
     }
 
+    // get google-notes that have a particular label
+    @GetMapping("/labels/google-notes/{id}")
+    public List<GoogleNotesDTO> getGoogleNotesByLabelId(@PathVariable Long id) {
+        Labels requestlabel = LabelsService.getlabelById(id);
+        List<GoogleNotesDTO> googleNotesDTOs = new ArrayList<>();
+        for (GoogleNotes googleNotes : requestlabel.getGoogleNotes()) {
+            GoogleNotesDTO googleNotesDTO = new GoogleNotesDTO(googleNotes);
+            googleNotesDTOs.add(googleNotesDTO);
+        }
+        return googleNotesDTOs;
+    }
+
     // update Labels rest api
-    @PutMapping("/Labels/{id}")
+    @PutMapping("/labels/{id}")
     public ResponseEntity<LabelsDTO> updateLabel(
             @PathVariable Long id, @RequestBody Labels LabelsDetails) {
         Labels updatedLabels = LabelsService.updatelabel(id, LabelsDetails);
-        LabelsDTO updatedLabelDTO = new LabelsDTO();
-        updatedLabelDTO.setId(updatedLabels.getId());
-        updatedLabelDTO.setTimeCreated(updatedLabels.getTimeCreated());
-        updatedLabelDTO.setName(updatedLabels.getName());
+        LabelsDTO updatedLabelDTO = new LabelsDTO(updatedLabels);
         return ResponseEntity.ok(updatedLabelDTO);
     }
 
     // delete google notes rest api
-    @DeleteMapping("/Labels/{id}")
+    @DeleteMapping("/labels/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteLabel(@PathVariable Long id) {
         LabelsService.deletelabelById(id);
         Map<String, Boolean> response = new HashMap<>();

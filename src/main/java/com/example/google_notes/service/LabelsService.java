@@ -1,5 +1,6 @@
 package com.example.google_notes.service;
 
+import com.example.google_notes.model.GoogleNotes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,6 @@ public class LabelsService {
         return labelsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Google Note does not exist with id: " + id));
     }
-
     public Labels updatelabel(Long id, Labels labelsDetails) {
         Labels labels = labelsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Google Note does not exist with id: " + id));
