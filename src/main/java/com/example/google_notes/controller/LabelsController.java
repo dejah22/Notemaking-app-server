@@ -61,6 +61,24 @@ public class LabelsController {
         return googleNotesDTOs;
     }
 
+    // get google-notes that have any of the given labels
+
+    @GetMapping("/labels/google-notes")
+    public List<GoogleNotesDTO> exampleMethod(@RequestParam("labels") String listOfLabels) {
+        List<String> labels = Arrays.asList(listOfLabels.split(","));
+        // Use the values list in your logic
+        Set<GoogleNotesDTO> googleNotesDTOSet = new HashSet<>();
+        for (String label : labels) {
+            Labels requestlabel = LabelsService.getlabelById(Long.valueOf(label));
+            for (GoogleNotes googleNotes : requestlabel.getGoogleNotes()) {
+                GoogleNotesDTO googleNotesDTO = new GoogleNotesDTO(googleNotes);
+                googleNotesDTOSet.add(googleNotesDTO);
+            }
+        }
+        List<GoogleNotesDTO> googleNotesDTOList = new ArrayList<>(googleNotesDTOSet);
+        return googleNotesDTOList;
+    }
+
     // update Labels rest api
     @PutMapping("/labels/{id}")
     public ResponseEntity<LabelsDTO> updateLabel(
