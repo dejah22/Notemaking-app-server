@@ -25,7 +25,7 @@ public class GoogleNotes {
     @Column(name = "titleName")
     private String titleName;
 
-    @Column(name = "notecontent")
+    @Column(name = "notecontent", length = 750)
     private String notecontent;
 
     @Column(name = "color")
